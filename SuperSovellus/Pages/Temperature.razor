@@ -4,6 +4,49 @@
 
 <h1>@TemperatureConverter.Name</h1>
 
+<div>
+	<input id="celsius" type="text" placeholder="0" onkeyup="this.value = this.value.replace(/[^0-9.-]+/, ''); Update(this.id, this.value)" onfocus="this.style.fontWeight = 'bold'" onblur="this.style.fontWeight = 'normal'" />
+	<span>°C</span>
+</div>
+
+<div>
+	<input id="kelvin" type="text" placeholder="273.15" onkeyup="this.value = this.value.replace(/[^0-9.-]+/, ''); Update(this.id, this.value)" onfocus="this.style.fontWeight = 'bold'" onblur="this.style.fontWeight = 'normal'" />
+	<span> K</span>
+</div>
+
+<div>
+	<input id="fahrenheit" type="text" placeholder="32" onkeyup="this.value = this.value.replace(/[^0-9.-]+/, ''); Update(this.id, this.value)" onfocus="this.style.fontWeight = 'bold'" onblur="this.style.fontWeight = 'normal'" />
+	<span>°F</span>
+</div>
+
+
+
+<script>
+	function Update(Type, Value) 
+	{
+		if (Value == "") {
+			document.getElementById("celsius").value = "";
+			document.getElementById("kelvin").value = "";
+			document.getElementById("fahrenheit").value = "";
+			return;
+		}
+
+		switch(Type) {
+			case "celsius":
+				document.getElementById("kelvin").value = +Value + 273.15;
+				document.getElementById("fahrenheit").value = +Value * (9 / 5) + 32;
+				break;
+			case "kelvin":
+				document.getElementById("celsius").value = +Value - 273.15;
+				document.getElementById("fahrenheit").value = (+Value - 273.15) * (9 / 5) + 32;
+				break;
+			case "fahrenheit":
+				document.getElementById("celsius").value = (+Value - 32) / (9 / 5);
+				document.getElementById("kelvin").value = (+Value - 32) / (9 / 5) + 273.15;
+				break;
+		}
+	}
+</script>
 
 
 @code {
@@ -11,8 +54,8 @@
 	{
 		
 		public static string Name = "Lämpötila";
-     
 
+		
 	}
 
     // public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
