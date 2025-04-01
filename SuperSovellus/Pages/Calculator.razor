@@ -1,16 +1,63 @@
-﻿@page "/Calculator"
+﻿@page "/calculator"
 
-<PageTitle>@CalculatorBase.Name</PageTitle>
+<h2>Super Laskin</h2>
 
-<h1>@CalculatorBase.Name</h1>
+<div>
+    <label>Numero 1:</label>
+    <input type="number" @bind="Numero1" />
+</div>
+<div>
+    <label>Numero 2:</label>
+    <input type="number" @bind="Numero2" />
+</div>
+<div>
+    <label>Operaatio:</label>
+    <select @bind="Operaatiolel">
+        <option value="+">Summa (+)</option>
+        <option value="-">Erotus (-)</option>
+        <option value="*">Tulo (*)</option>
+        <option value="/">Osamäärä (/)</option>
+    </select>
+</div>
 
+
+
+
+<button @onclick="Calculate">Laske</button>
+
+@if (Finaltulos.HasValue)
+{
+    <h3>Tulos: @Finaltulos</h3>
+}
 
 @code {
-	public static class CalculatorBase
-	{
-		public static string Name = "Laskin";
+    private double? Numero1 { get; set; }
+    private double? Numero2 { get; set; }
+    private string Operaatiolel { get; set; } = "+";
+    private double? Finaltulos { get; set; }
 
-
-	}
-
+    private void Calculate()
+    {
+        if (Numero1.HasValue && Numero2.HasValue)
+        {
+            switch (Operaatiolel)
+            {
+                case "+":
+                    Finaltulos = Numero1 + Numero2;
+                    break;
+                case "-":
+                    Finaltulos = Numero1 - Numero2;
+                    break;
+                case "*":
+                    Finaltulos = Numero1 * Numero2;
+                    break;
+                case "/":
+                    if (Numero2 != 0)
+                        Finaltulos = Numero1 / Numero2;
+                    else
+                        Finaltulos = null;
+                    break;
+            }
+        }
+    }
 }
