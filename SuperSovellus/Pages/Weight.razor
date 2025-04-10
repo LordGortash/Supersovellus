@@ -4,8 +4,8 @@
 
 
 <div>
-    <label>Operaatio2:</label>
-    <select @bind="muuntooperaatio2">
+    <label>Operaatio:</label>
+    <select @bind="muuntooperaatio">
         <option value="m"> milligram </option>
         <option value="g"> gram </option>
         <option value="k"> kilogram </option>
@@ -22,8 +22,8 @@
 </div>
 
 <div>
-    <label>Operaatio:</label>
-    <select @bind="muuntooperaatio">
+    <label>Operaatio2:</label>
+    <select @bind="muuntooperaatio2">
         <option value="m"> milligram </option>
         <option value="g"> gram </option>
         <option value="k"> kilogram </option>
@@ -57,22 +57,22 @@
                 välivalue = transvalue * 1000;
                 break;
             case "g":
-                finaaalitulos = transvalue * 1;
+                    välivalue = transvalue * 1;
                 break;
             case "k":
-                finaaalitulos = transvalue / 1000;
+                    välivalue = transvalue / 1000;
                 break;
             case "t":
-                finaaalitulos = transvalue / 1000000;
+                    välivalue = transvalue / 1000000;
                 break;
             case "o":
-                finaaalitulos = transvalue / 28.35;
+                    välivalue = transvalue / 28.35;
                 break;
             case "p":
-                    finaaalitulos = transvalue * 453.59237;
+                    välivalue = transvalue * 453.59237;
                 break;
             case "s":
-                finaaalitulos = transvalue * 0.00015747;
+                    välivalue = transvalue * 0.00015747;
                 break; }
 
        
@@ -99,6 +99,7 @@
             case "s":
                 finaaalitulos = välivalue * 0.00015747;
                 break;
+               
            
         }
 
