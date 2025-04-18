@@ -4,7 +4,7 @@
 
 
 <div>
-    <label>Operaatio:</label>
+    <label>Initial unit:</label>
     <select @bind="muuntooperaatio">
         <option value="m"> milligram </option>
         <option value="g"> gram </option>
@@ -17,12 +17,12 @@
 </div>
 
 <div>
-    <label>Transvalue:</label>
+    <label>Value:</label>
     <input type="number" @bind="transvalue" />
 </div>
 
 <div>
-    <label>Operaatio2:</label>
+    <label>Desired unit:</label>
     <select @bind="muuntooperaatio2">
         <option value="m"> milligram </option>
         <option value="g"> gram </option>
@@ -47,32 +47,32 @@
 
     private double välivalue;
 
-    private string muuntooperaatio { get; set; } = "+";
-    private string muuntooperaatio2 { get; set; } = "+";
+    private string muuntooperaatio { get; set; } = "g";
+    private string muuntooperaatio2 { get; set; } = "g";
     private void Calculate()
 
      {if (transvalue!=null)
          switch (muuntooperaatio) {
             case "m":
-                välivalue = transvalue * 1000;
+                välivalue = transvalue / 1000;
                 break;
             case "g":
-                    välivalue = transvalue * 1;
+                    välivalue = transvalue ;
                 break;
             case "k":
-                    välivalue = transvalue / 1000;
+                    välivalue = transvalue * 1000;
                 break;
             case "t":
-                    välivalue = transvalue / 1000000;
+                    välivalue = transvalue * 1000000;
                 break;
             case "o":
-                    välivalue = transvalue / 28.35;
+                    välivalue = transvalue * 28.3495;
                 break;
             case "p":
                     välivalue = transvalue * 453.59237;
                 break;
             case "s":
-                    välivalue = transvalue * 0.00015747;
+                    välivalue = transvalue * 6350.29;
                 break; }
 
        
@@ -82,7 +82,7 @@
                 finaaalitulos= välivalue * 1000;
                 break;
             case "g":
-                finaaalitulos = välivalue * 1;
+                finaaalitulos = välivalue ;
                 break;
             case "k":
                 finaaalitulos = välivalue / 1000;
@@ -91,13 +91,13 @@
                 finaaalitulos = välivalue / 1000000;
                 break;
             case "o":
-                finaaalitulos = välivalue / 28.35;
+                finaaalitulos = välivalue / 28.3495;
                 break;
             case "p":
-                finaaalitulos = välivalue * 0.002205;
+                finaaalitulos = välivalue / 453.59237;
                 break;
             case "s":
-                finaaalitulos = välivalue * 0.00015747;
+                finaaalitulos = välivalue / 6350.29;
                 break;
                
            
