@@ -1,19 +1,159 @@
 ﻿@page "/Length"
 
-<PageTitle>@LengthConverter.Name</PageTitle>
+<PageTitle>[Super] Length Converter</PageTitle>
 
-<h1>@LengthConverter.Name</h1>
+<h1>Length</h1>
 
-<h2>Welcome to Lenght converter! Select an unit of measurement to get started!</h2>
+<div id="lengths" oninput="UpdateLength(event.target.id, event.target.value); UpdateElements(event.target.id);">
+	<div>
+		<input id="millimetre" type="text" placeholder="1000" />
+		<span>mm</span>
+	</div>
 
+	<div>
+		<input id="centimetre" type="text" placeholder="100" />
+		<span>cm</span>
+	</div>
 
-@code {
-	public static class LengthConverter 
-	{
-		public static string Name = "Pituus";
+	<div>
+		<input id="metre" type="text" placeholder="1" />
+		<span>m</span>
+	</div>
 
+	<div>
+		<input id="kilometre" type="text" placeholder="0.001" />
+		<span>km</span>
+	</div>
 
+	<br>
+
+	<div>
+		<input id="inch" type="text" placeholder="39.37007874015748" />
+		<span>in</span>
+	</div>
+
+	<div>
+		<input id="foot" type="text" placeholder="3.280839895013123" />
+		<span>ft</span>
+	</div>
+
+	<div>
+		<input id="yard" type="text" placeholder="1.0936132983377078" />
+		<span>yd</span>
+	</div>
+
+	<div>
+		<input id="mile" type="text" placeholder="0.0006213711922373339" />
+		<span>mi</span>
+	</div>
+</div>
+
+<script>
+	var length; // Base length - equal to metre
+
+	function UpdateLength(SOURCE_ID, VALUE) {
+		// Handle empty input
+		if (VALUE.length == 0) {
+			length = null; // Clear length
+			return; // Abort
+		}
+
+		// Validate input and changed element value
+		// - This disallows "-.X" despite it correctly evaluating to "-0.X"!
+		document.getElementById(SOURCE_ID).value = VALUE = VALUE.replace(/[^0-9.-]+|[.-]{2,}|(?<=\..*)\.|(?<=.+)-/, '');
+
+		// Parse valid input
+		// - Valid numbers are cast to remove leading zeros and prevent string concatenation
+		// - NaN is assumed to be 0 for display purposes
+		VALUE = isNaN(+VALUE) ? 0 : +VALUE;
+
+		// Update base length
+		switch(SOURCE_ID) {
+			case "millimetre":
+				length = VALUE / 1000;
+				break;
+			case "centimetre":
+				length = VALUE / 100;
+				break;
+			case "metre":
+				length = VALUE;
+				break;
+			case "kilometre":
+				length = VALUE * 1000;
+				break;
+			
+			case "inch":
+				length = VALUE * 0.0254;
+				break;
+			case "foot":
+				length = VALUE * 0.3048;
+				break;
+			case "yard":
+				length = VALUE * 0.9144;
+				break;
+			case "mile":
+				length = VALUE * 1609.344;
+				break;
+
+			// HANDLE NEW LENGTHS HERE AND IN UpdateElements()!
+
+			default:
+				console.warn("UpdateLength()\nCannot calculate base length from unknown element ID " + SOURCE_ID);
+		}
 	}
 
-	//(m)*3.28084=feet
-}
+	function UpdateElements(EXCEPT_ID) {
+		// Update all length elements
+		for (let elem of document.getElementById("lengths").getElementsByTagName("input")) {
+			if (elem.id == EXCEPT_ID) {
+				continue; // Element is not updated
+			}
+
+			// Handle no length
+			if (length === null) {
+				elem.value = ""; // Element is cleared
+				continue;
+			}
+
+			// Calculate element value
+			var result;
+
+			switch (elem.id) {
+				case "millimetre":
+					result = length * 1000;
+					break;
+				case "centimetre":
+					result = length * 100;
+					break;
+				case "metre":
+					result = length;
+					break;
+				case "kilometre":
+					result = length / 1000;
+					break;
+
+				case "inch":
+					result = length / 0.0254;
+					break;
+				case "foot":
+					result = length / 0.3048;
+					break;
+				case "yard":
+					result = length / 0.9144;
+					break;
+				case "mile":
+					result = length / 1609.344;
+					break;
+
+				// HANDLE NEW LENGTHS HERE AND IN UpdateLength()!
+
+				default:
+					console.warn("UpdateDisplay()\Cannot update value for unknown element ID " + elem.id);
+			}
+
+			// Update element value
+			elem.value = result;
+		}
+	}
+</script>
+
