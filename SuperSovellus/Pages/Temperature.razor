@@ -1,64 +1,99 @@
 ﻿@page "/Temperature"
 
-<PageTitle>@TemperatureConverter.Name</PageTitle>
+<PageTitle>[Super] Temperature Converter</PageTitle>
 
-<h1>@TemperatureConverter.Name</h1>
+<h1>Temperature</h1>
 
-<div>
-	<input id="celsius" type="text" placeholder="0" onkeyup="this.value = this.value.replace(/[^0-9.-]+/, ''); Update(this.id, this.value)" onfocus="this.style.fontWeight = 'bold'" onblur="this.style.fontWeight = 'normal'" />
-	<span>°C</span>
+<div id="temperatures" oninput="UpdateTemperature(event.target.id, event.target.value); UpdateElements(event.target.id);">
+	<div>
+		<input id="celsius" type="text" placeholder="0" />
+		<span>°C</span>
+	</div>
+
+	<div>
+		<input id="kelvin" type="text" placeholder="273.15"  />
+		<span>K</span>
+	</div>
+
+	<div>
+		<input id="fahrenheit" type="text" placeholder="32"  />
+		<span>°F</span>
+	</div>	
 </div>
-
-<div>
-	<input id="kelvin" type="text" placeholder="273.15" onkeyup="this.value = this.value.replace(/[^0-9.-]+/, ''); Update(this.id, this.value)" onfocus="this.style.fontWeight = 'bold'" onblur="this.style.fontWeight = 'normal'" />
-	<span> K</span>
-</div>
-
-<div>
-	<input id="fahrenheit" type="text" placeholder="32" onkeyup="this.value = this.value.replace(/[^0-9.-]+/, ''); Update(this.id, this.value)" onfocus="this.style.fontWeight = 'bold'" onblur="this.style.fontWeight = 'normal'" />
-	<span>°F</span>
-</div>
-
-
 
 <script>
-	function Update(Type, Value) 
-	{
-		if (Value == "") {
-			document.getElementById("celsius").value = "";
-			document.getElementById("kelvin").value = "";
-			document.getElementById("fahrenheit").value = "";
-			return;
+	var temperature; // Base temperature - equal to celsius
+
+	function UpdateTemperature(SOURCE_ID, VALUE) {
+		// Handle empty input
+		if (VALUE.length == 0) {
+			temperature = null; // Clear temperature
+			return; // Abort
 		}
 
-		switch(Type) {
+		// Validate input and changed element value
+		// - This disallows "-.X" despite it correctly evaluating to "-0.X"!
+		document.getElementById(SOURCE_ID).value = VALUE = VALUE.replace(/[^0-9.-]+|[.-]{2,}|(?<=\..*)\.|(?<=.+)-/, '');
+
+		// Parse valid input
+		// - Valid numbers are cast to remove leading zeros and prevent string concatenation
+		// - NaN is assumed to be 0 for display purposes
+		VALUE = isNaN(+VALUE) ? 0 : +VALUE;
+
+		// Update base temperature
+		switch(SOURCE_ID) {
 			case "celsius":
-				document.getElementById("kelvin").value = +Value + 273.15;
-				document.getElementById("fahrenheit").value = +Value * (9 / 5) + 32;
+				temperature = VALUE;
 				break;
 			case "kelvin":
-				document.getElementById("celsius").value = +Value - 273.15;
-				document.getElementById("fahrenheit").value = (+Value - 273.15) * (9 / 5) + 32;
+				temperature = VALUE - 273.15;
 				break;
 			case "fahrenheit":
-				document.getElementById("celsius").value = (+Value - 32) / (9 / 5);
-				document.getElementById("kelvin").value = (+Value - 32) / (9 / 5) + 273.15;
+				temperature = (VALUE - 32) / 1.8;
 				break;
+
+			// HANDLE NEW TEMPERATURES HERE AND IN UpdateElements()!
+
+			default:
+				console.warn("UpdateTemperature()\nCannot calculate base temperature from unknown element ID " + SOURCE_ID);
+		}
+	}
+
+	function UpdateElements(EXCEPT_ID) {
+		// Update all temperature elements
+		for (let elem of document.getElementById("temperatures").getElementsByTagName("input")) {
+			if (elem.id == EXCEPT_ID) {
+				continue; // Element is not updated
+			}
+
+			// Handle no temperature
+			if (temperature === null) {
+				elem.value = ""; // Element is cleared
+				continue;
+			}
+
+			// Calculate element value
+			var result;
+
+			switch (elem.id) {
+				case "celsius":
+					result = temperature;
+					break;
+				case "kelvin":
+					result = temperature + 273.15;
+					break;
+				case "fahrenheit":
+					result = temperature * 1.8 + 32;
+					break;
+
+				// HANDLE NEW TEMPERATURES HERE AND IN UpdateTemperature()!
+
+				default:
+					console.warn("UpdateDisplay()\Cannot update value for unknown element ID " + elem.id);
+			}
+			
+			// Update element value
+			elem.value = result;
 		}
 	}
 </script>
-
-
-@code {
-	public static class TemperatureConverter
-	{
-		
-		public static string Name = "Lämpötila";
-
-		
-	}
-
-    // public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-    // public int temperatureK => (temperatureC + 274.15)
-    //f to k
-}
