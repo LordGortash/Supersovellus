@@ -1,36 +1,37 @@
 ﻿@page "/calculator"
 
-<h2>Super Laskin</h2>
+<PageTitle>[Super] Calculator</PageTitle>
+
+<h1>Calculator</h1>
 
 <div>
-    <label>Numero 1:</label>
+    <label>Number 1:</label>
     <input type="number" @bind="Numero1" />
 </div>
 <div>
-    <label>Numero 2:</label>
+    <label>Number 2:</label>
     <input type="number" @bind="Numero2" />
 </div>
 <div>
-    <label>Operaatio:</label>
+    <label>Operation:</label>
     <select @bind="Operaatiolel">
-        <option value="+">Summa (+)</option>
-        <option value="-">Erotus (-)</option>
-        <option value="*">Tulo (*)</option>
-        <option value="/">Osamäärä (/)</option>
+        <option value="+">Addition (+)</option>
+        <option value="-">Subtraction (-)</option>
+        <option value="*">Multiplication (*)</option>
+        <option value="/">Division (/)</option>
+        <option value="^">Power (^)</option>
+        <option value="%">Modulo (%)</option>
     </select>
 </div>
 
 
 
 
-<button @onclick="Calculate">Laske</button>
+<button @onclick="Calculate">Calculate</button>
 
 @if (Finaltulos.HasValue)
 {
-    <h3>Tulos: @Finaltulos</h3>
- 
-    
-
+    <h3>Result: @Finaltulos</h3>
 }
 
 @code {
@@ -59,6 +60,12 @@
                         Finaltulos = Numero1 / Numero2;
                     else
                         Finaltulos = null;
+                    break;
+                case "^":
+                    Finaltulos = Math.Pow((double)Numero1, (double)Numero2);
+                    break;
+                case "%":
+                    Finaltulos = Numero1 % Numero2;
                     break;
             }
             if (Finaltulos.HasValue)

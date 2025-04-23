@@ -1,19 +1,110 @@
 ﻿@page "/Weight"
 
-<PageTitle>@WeightConverter.Name</PageTitle>
+<h2>Super Weight Converter</h2>
 
-<h1>@WeightConverter.Name</h1>
 
+<div>
+    <label>Alkuyksikkö:</label>
+    <select @bind="muuntooperaatio">
+        <option value="m"> milligramma </option>
+        <option value="g"> gramma </option>
+        <option value="k"> kilogramma </option>
+        <option value="t">tonni</option>
+        <option value="o"> ounce </option>
+        <option value="p"> pound </option>
+        <option value="s">stone</option>
+    </select>
+</div>
+
+<div>
+    <label>Arvo:</label>
+    <input type="number" @bind="transvalue" />
+</div>
+
+<div>
+    <label>Haluttu yksikkö:</label>
+    <select @bind="muuntooperaatio2">
+        <option value="m"> milligramma </option>
+        <option value="g"> gramma </option>
+        <option value="k"> kilogramma </option>
+        <option value="t">tonni</option>
+        <option value="o"> ounce </option>
+        <option value="p"> pound </option>
+        <option value="s">stone</option>
+    </select>
+</div>
+
+<button @onclick="Calculate">Laske</button>
+
+@if (finaaalitulos.HasValue)
+{
+    <h3>Tulos: @finaaalitulos</h3>
+}
 
 @code {
-	public static class WeightConverter
-	{
-		public static string Name = "Paino";
+    private double transvalue { get; set; }
+    private double? finaaalitulos { get; set; }
+
+    private double välivalue;
+
+    private string muuntooperaatio { get; set; } = "g";
+    private string muuntooperaatio2 { get; set; } = "g";
+    private void Calculate()
+
+     {if (transvalue!=null)
+         switch (muuntooperaatio) {
+            case "m":
+                välivalue = transvalue / 1000;
+                break;
+            case "g":
+                    välivalue = transvalue ;
+                break;
+            case "k":
+                    välivalue = transvalue * 1000;
+                break;
+            case "t":
+                    välivalue = transvalue * 1000000;
+                break;
+            case "o":
+                    välivalue = transvalue * 28.3495;
+                break;
+            case "p":
+                    välivalue = transvalue * 453.59237;
+                break;
+            case "s":
+                    välivalue = transvalue * 6350.29;
+                break; }
 
        
+       switch (muuntooperaatio2)
+        {
+            case "m":
+                finaaalitulos= välivalue * 1000;
+                break;
+            case "g":
+                finaaalitulos = välivalue ;
+                break;
+            case "k":
+                finaaalitulos = välivalue / 1000;
+                break;
+            case "t":
+                finaaalitulos = välivalue / 1000000;
+                break;
+            case "o":
+                finaaalitulos = välivalue / 28.3495;
+                break;
+            case "p":
+                finaaalitulos = välivalue / 453.59237;
+                break;
+            case "s":
+                finaaalitulos = välivalue / 6350.29;
+                break;
+               
+           
+        }
 
-	}
+    }
+}
 	
 
-	//kg -> imp.  (kg)/0.45359237
-}
+	

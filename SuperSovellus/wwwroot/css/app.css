@@ -100,4 +100,12 @@ a, .btn-link {
 
 code {
     color: #c02d76;
+}   
+
+
+/* Page contents */
+
+input:focus {
+    font-weight: bold;
 }
+
