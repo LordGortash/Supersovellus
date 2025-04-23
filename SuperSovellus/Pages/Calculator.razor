@@ -68,6 +68,11 @@
                     Finaltulos = Numero1 % Numero2;
                     break;
             }
+            if (Finaltulos.HasValue)
+            {
+                Numero1 = Finaltulos;
+                Numero2 = null;
+            }
         }
     }
 }
