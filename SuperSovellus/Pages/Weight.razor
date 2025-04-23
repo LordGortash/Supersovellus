@@ -1,44 +1,46 @@
 ﻿@page "/Weight"
 
-<h2>Super Weight Converter</h2>
+<PageTitle>[Super] Weight Converter</PageTitle>
+
+<h1>Weight</h1>
 
 
 <div>
-    <label>Alkuyksikkö:</label>
+    <label>From unit:</label>
     <select @bind="muuntooperaatio">
-        <option value="m"> milligramma </option>
-        <option value="g"> gramma </option>
-        <option value="k"> kilogramma </option>
-        <option value="t">tonni</option>
-        <option value="o"> ounce </option>
-        <option value="p"> pound </option>
-        <option value="s">stone</option>
+        <option value="m">Milligram</option>
+        <option value="g">Gram</option>
+        <option value="k">Kilogram</option>
+        <option value="t">Ton</option>
+        <option value="o">Ounce</option>
+        <option value="p">Pound</option>
+        <option value="s">Stone</option>
     </select>
 </div>
 
 <div>
-    <label>Arvo:</label>
+    <label>Amount:</label>
     <input type="number" @bind="transvalue" />
 </div>
 
 <div>
-    <label>Haluttu yksikkö:</label>
+    <label>To unit:</label>
     <select @bind="muuntooperaatio2">
-        <option value="m"> milligramma </option>
-        <option value="g"> gramma </option>
-        <option value="k"> kilogramma </option>
-        <option value="t">tonni</option>
-        <option value="o"> ounce </option>
-        <option value="p"> pound </option>
-        <option value="s">stone</option>
+        <option value="m">Milligram</option>
+        <option value="g">Gram</option>
+        <option value="k">Kilogram</option>
+        <option value="t">Ton</option>
+        <option value="o">Ounce</option>
+        <option value="p">Pound</option>
+        <option value="s">Stone</option>
     </select>
 </div>
 
-<button @onclick="Calculate">Laske</button>
+<button @onclick="Calculate">Calculate</button>
 
 @if (finaaalitulos.HasValue)
 {
-    <h3>Tulos: @finaaalitulos</h3>
+    <h3>Result: @finaaalitulos</h3>
 }
 
 @code {
@@ -51,38 +53,41 @@
     private string muuntooperaatio2 { get; set; } = "g";
     private void Calculate()
 
-     {if (transvalue!=null)
-         switch (muuntooperaatio) {
-            case "m":
-                välivalue = transvalue / 1000;
-                break;
-            case "g":
-                    välivalue = transvalue ;
-                break;
-            case "k":
+    {
+        if (transvalue != null)
+            switch (muuntooperaatio)
+            {
+                case "m":
+                    välivalue = transvalue / 1000;
+                    break;
+                case "g":
+                    välivalue = transvalue;
+                    break;
+                case "k":
                     välivalue = transvalue * 1000;
-                break;
-            case "t":
+                    break;
+                case "t":
                     välivalue = transvalue * 1000000;
-                break;
-            case "o":
+                    break;
+                case "o":
                     välivalue = transvalue * 28.3495;
-                break;
-            case "p":
+                    break;
+                case "p":
                     välivalue = transvalue * 453.59237;
-                break;
-            case "s":
+                    break;
+                case "s":
                     välivalue = transvalue * 6350.29;
-                break; }
+                    break;
+            }
 
-       
-       switch (muuntooperaatio2)
+
+        switch (muuntooperaatio2)
         {
             case "m":
-                finaaalitulos= välivalue * 1000;
+                finaaalitulos = välivalue * 1000;
                 break;
             case "g":
-                finaaalitulos = välivalue ;
+                finaaalitulos = välivalue;
                 break;
             case "k":
                 finaaalitulos = välivalue / 1000;
@@ -99,12 +104,12 @@
             case "s":
                 finaaalitulos = välivalue / 6350.29;
                 break;
-               
-           
+
+
         }
 
     }
 }
-	
 
-	
+
+
